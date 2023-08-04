@@ -3,12 +3,14 @@ package com.lumen.vertx;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.vertx.core.AbstractVerticle;
 import io.vertx.core.DeploymentOptions;
+import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.core.http.HttpServer;
 import io.vertx.mutiny.ext.web.Router;
 import io.vertx.mutiny.ext.web.RoutingContext;
 import io.vertx.mutiny.ext.web.handler.BodyHandler;
+import io.vertx.mutiny.ext.web.handler.CorsHandler;
 import org.hibernate.reactive.mutiny.Mutiny;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +58,19 @@ public class MainVerticle extends AbstractVerticle {
 
     // tag::routing[]
     Router router = Router.router(vertx);
+    router.route().handler(CorsHandler.create()
+    // add an allowed origin from config file
+    .addOrigin("*")
+    .allowedMethod(HttpMethod.GET)
+    // .allowedMethod(HttpMethod.POST)
+    // .allowedMethod(HttpMethod.OPTIONS)
+    // .allowedHeader("Access-Control-Allow-Headers")
+    // .allowedHeader("Access-Control-Allow-Method")
+    // .allowedHeader("Access-Control-Allow-Origin")
+    // .allowCredentials(true)
+    // .allowedHeader("Authorization")
+    // .allowedHeader("Access-Control-Allow-Credentials")
+    .allowedHeader("Content-Type"));
 
     BodyHandler bodyHandler = BodyHandler.create();
     router.post().handler(bodyHandler::handle);
