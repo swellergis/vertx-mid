@@ -18,9 +18,9 @@
 
       <!-- Credentials -->
       <property name="javax.persistence.jdbc.user"
-                value="admin"/>
+                value="foo"/>
       <property name="javax.persistence.jdbc.password"
-                value="postgres"/>
+                value="bar"/>
 
       <!-- The Vert.x SQL Client connection pool size -->
       <property name="hibernate.connection.pool_size"
