@@ -15,6 +15,7 @@ import org.hibernate.reactive.mutiny.Mutiny;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.lumen.vertx.model.Comment;
 import com.lumen.vertx.model.Customer;
 
 import javax.persistence.Persistence;
@@ -78,6 +79,11 @@ public class MainVerticle extends AbstractVerticle {
     router.get("/customers").respond(this::listCustomers);
     router.get("/customers/:id").respond(this::getCustomer);
     router.post("/customers").respond(this::createCustomer);
+
+    router.get("/comments").respond(this::listComments);
+    router.get("/comments/:id").respond(this::getComment);
+    router.get("/usercomments/:emp_id").respond(this::listUserComments);
+    router.post("/comments").respond(this::createComment);
     // end::routing[]
 
     // tag::async-start[]
@@ -110,6 +116,34 @@ public class MainVerticle extends AbstractVerticle {
       persist(customer)
       .call(session::flush)
       .replaceWith(customer));
+  }
+
+  private Uni<Comment> createComment(RoutingContext ctx) {
+    Comment comment = ctx.body().asPojo(Comment.class);
+    return emf.withSession(session -> session.
+      persist(comment)
+      .call(session::flush)
+      .replaceWith(comment));
+  }
+
+  private Uni<List<Comment>> listComments(RoutingContext ctx) {
+    return emf.withSession(session -> session
+      .createQuery("from Comment", Comment.class)
+      .getResultList());
+  }
+
+  private Uni<List<Comment>> listUserComments(RoutingContext ctx) {
+    String empId = ctx.pathParam("emp_id");
+    return emf.withSession(session -> session
+      .createQuery("FROM Comment WHERE emp_id='" + empId + "'", Comment.class)
+      .getResultList());
+  }
+
+  private Uni<Comment> getComment(RoutingContext ctx) {
+    long id = Long.parseLong(ctx.pathParam("id"));
+    return emf.withSession(session -> session
+      .find(Comment.class, id))
+      .onItem().ifNull().continueWith(Comment::new);
   }
   // end::crud-methods[]
 
