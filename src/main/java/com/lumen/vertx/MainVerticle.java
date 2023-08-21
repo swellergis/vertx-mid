@@ -16,7 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.lumen.vertx.model.Comment;
-import com.lumen.vertx.model.Customer;
+import com.lumen.vertx.model.SsnLookup;
 
 import javax.persistence.Persistence;
 import java.util.List;
@@ -97,21 +97,21 @@ public class MainVerticle extends AbstractVerticle {
   }
 
   // tag::crud-methods[]
-  private Uni<List<Customer>> listCustomers(RoutingContext ctx) {
+  private Uni<List<SsnLookup>> listCustomers(RoutingContext ctx) {
     return emf.withSession(session -> session
-      .createQuery("from Customer", Customer.class)
+      .createQuery("from SsnLookup", SsnLookup.class)
       .getResultList());
   }
 
-  private Uni<Customer> getCustomer(RoutingContext ctx) {
-    long id = Long.parseLong(ctx.pathParam("id"));
+  private Uni<SsnLookup> getCustomer(RoutingContext ctx) {
+    long id = Long.parseLong(ctx.pathParam("customer_id"));
     return emf.withSession(session -> session
-      .find(Customer.class, id))
-      .onItem().ifNull().continueWith(Customer::new);
+      .find(SsnLookup.class, id))
+      .onItem().ifNull().continueWith(SsnLookup::new);
   }
 
-  private Uni<Customer> createCustomer(RoutingContext ctx) {
-    Customer customer = ctx.body().asPojo(Customer.class);
+  private Uni<SsnLookup> createCustomer(RoutingContext ctx) {
+    SsnLookup customer = ctx.body().asPojo(SsnLookup.class);
     return emf.withSession(session -> session.
       persist(customer)
       .call(session::flush)
