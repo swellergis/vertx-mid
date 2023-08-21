@@ -15,7 +15,7 @@ import org.hibernate.reactive.mutiny.Mutiny;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.lumen.vertx.model.Comment;
+import com.lumen.vertx.model.Request;
 import com.lumen.vertx.model.SsnLookup;
 
 import javax.persistence.Persistence;
@@ -80,10 +80,10 @@ public class MainVerticle extends AbstractVerticle {
     router.get("/customers/:id").respond(this::getCustomer);
     router.post("/customers").respond(this::createCustomer);
 
-    router.get("/comments").respond(this::listComments);
-    router.get("/comments/:id").respond(this::getComment);
-    router.get("/usercomments/:emp_id").respond(this::listUserComments);
-    router.post("/comments").respond(this::createComment);
+    router.get("/requests").respond(this::listRequests);
+    router.get("/requests/:id").respond(this::getRequest);
+    router.get("/userrequests/:emp_id").respond(this::listUserRequests);
+    router.post("/requests").respond(this::createRequest);
     // end::routing[]
 
     // tag::async-start[]
@@ -118,32 +118,32 @@ public class MainVerticle extends AbstractVerticle {
       .replaceWith(customer));
   }
 
-  private Uni<Comment> createComment(RoutingContext ctx) {
-    Comment comment = ctx.body().asPojo(Comment.class);
+  private Uni<Request> createRequest(RoutingContext ctx) {
+    Request request = ctx.body().asPojo(Request.class);
     return emf.withSession(session -> session.
-      persist(comment)
+      persist(request)
       .call(session::flush)
-      .replaceWith(comment));
+      .replaceWith(request));
   }
 
-  private Uni<List<Comment>> listComments(RoutingContext ctx) {
+  private Uni<List<Request>> listRequests(RoutingContext ctx) {
     return emf.withSession(session -> session
-      .createQuery("from Comment", Comment.class)
+      .createQuery("from Request", Request.class)
       .getResultList());
   }
 
-  private Uni<List<Comment>> listUserComments(RoutingContext ctx) {
+  private Uni<List<Request>> listUserRequests(RoutingContext ctx) {
     String empId = ctx.pathParam("emp_id");
     return emf.withSession(session -> session
-      .createQuery("FROM Comment WHERE emp_id='" + empId + "'", Comment.class)
+      .createQuery("FROM Request WHERE emp_id='" + empId + "'", Request.class)
       .getResultList());
   }
 
-  private Uni<Comment> getComment(RoutingContext ctx) {
+  private Uni<Request> getRequest(RoutingContext ctx) {
     long id = Long.parseLong(ctx.pathParam("id"));
     return emf.withSession(session -> session
-      .find(Comment.class, id))
-      .onItem().ifNull().continueWith(Comment::new);
+      .find(Request.class, id))
+      .onItem().ifNull().continueWith(Request::new);
   }
   // end::crud-methods[]
 
