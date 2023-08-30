@@ -4,7 +4,10 @@ import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.vertx.core.AbstractVerticle;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.http.HttpMethod;
+import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.net.JksOptions;
+import io.vertx.core.net.SelfSignedCertificate;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.core.http.HttpServer;
 import io.vertx.mutiny.ext.web.Router;
@@ -86,11 +89,19 @@ public class MainVerticle extends AbstractVerticle {
     router.post("/requests").respond(this::createRequest);
     // end::routing[]
 
+    int port = 8080;
+    SelfSignedCertificate certificate = SelfSignedCertificate.create();
+
+    HttpServerOptions options = new HttpServerOptions()
+      .setSsl(true)
+      .setKeyCertOptions(certificate.keyCertOptions())
+      .setTrustOptions(certificate.trustOptions());
+
     // tag::async-start[]
-    Uni<HttpServer> startHttpServer = vertx.createHttpServer()
+    Uni<HttpServer> startHttpServer = vertx.createHttpServer(options)
       .requestHandler(router)
-      .listen(8080)
-      .onItem().invoke(() -> logger.info("✅ HTTP server listening on port 8080"));
+      .listen(port)
+      .onItem().invoke(() -> logger.info("✅ HTTP server listening on port " + port));
 
     return Uni.combine().all().unis(startHibernate, startHttpServer).discardItems();  // <1>
     // end::async-start[]
