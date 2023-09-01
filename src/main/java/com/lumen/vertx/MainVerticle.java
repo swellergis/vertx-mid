@@ -7,7 +7,8 @@ import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.net.JksOptions;
-import io.vertx.core.net.SelfSignedCertificate;
+import io.vertx.core.net.PemKeyCertOptions;
+import io.vertx.core.net.PemTrustOptions;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.core.http.HttpServer;
 import io.vertx.mutiny.ext.web.Router;
@@ -89,13 +90,22 @@ public class MainVerticle extends AbstractVerticle {
     router.post("/requests").respond(this::createRequest);
     // end::routing[]
 
-    int port = 8080;
-    SelfSignedCertificate certificate = SelfSignedCertificate.create();
+    JksOptions keyOptions = new JksOptions();
+    keyOptions.setPath("/home/toor/certs/selfsigned2.jks");
+    // keyOptions.setPath("atarc-websvr.jks");
+    keyOptions.setPassword("changeit");
 
     HttpServerOptions options = new HttpServerOptions()
+      .setUseAlpn(true)
       .setSsl(true)
-      .setKeyCertOptions(certificate.keyCertOptions())
-      .setTrustOptions(certificate.trustOptions());
+      .setKeyStoreOptions(keyOptions);
+      // .setPemTrustOptions(new PemTrustOptions()
+      // .addCertPath("/etc/letsencrypt/live/atarcapi.eastus.cloudapp.azure.com/chain.pem"))
+      // .setPemKeyCertOptions(new PemKeyCertOptions()
+      //   .addKeyPath("/etc/letsencrypt/live/atarcapi.eastus.cloudapp.azure.com/privkey.pem")
+      //   .addCertPath("/etc/letsencrypt/live/atarcapi.eastus.cloudapp.azure.com/fullchain.pem"));
+
+    int port = 8443;
 
     // tag::async-start[]
     Uni<HttpServer> startHttpServer = vertx.createHttpServer(options)
