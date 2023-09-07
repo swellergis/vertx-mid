@@ -96,6 +96,7 @@ public class MainVerticle extends AbstractVerticle {
     keyOptions.setPassword("changeit");
 
     HttpServerOptions options = new HttpServerOptions()
+      .setIdleTimeout(0)
       .setUseAlpn(true)
       .setSsl(true)
       .setKeyStoreOptions(keyOptions);
