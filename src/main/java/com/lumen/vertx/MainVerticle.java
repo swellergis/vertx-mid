@@ -97,16 +97,19 @@ public class MainVerticle extends AbstractVerticle {
 
     HttpServerOptions options = new HttpServerOptions()
       .setIdleTimeout(0)
-      .setUseAlpn(true)
-      .setSsl(true)
-      .setKeyStoreOptions(keyOptions);
+      .setUseAlpn(true);
+
+      // .setSsl(true)
+      // .setKeyStoreOptions(keyOptions);
+
       // .setPemTrustOptions(new PemTrustOptions()
       // .addCertPath("/etc/letsencrypt/live/atarcapi.eastus.cloudapp.azure.com/chain.pem"))
       // .setPemKeyCertOptions(new PemKeyCertOptions()
       //   .addKeyPath("/etc/letsencrypt/live/atarcapi.eastus.cloudapp.azure.com/privkey.pem")
       //   .addCertPath("/etc/letsencrypt/live/atarcapi.eastus.cloudapp.azure.com/fullchain.pem"));
 
-    int port = 8443;
+    // int port = 8443;
+    int port = 8080;
 
     // tag::async-start[]
     Uni<HttpServer> startHttpServer = vertx.createHttpServer(options)
