@@ -38,7 +38,6 @@ public class MainVerticle extends AbstractVerticle {
 
     // tag::hr-start[]
     Uni<Void> startHibernate = Uni.createFrom().deferred(() -> {
-      // var pgPort = config().getInteger("pgPort", 5432);
       var pgName = config().getString("pg.name");
       var pgUri = config().getString("pg.uri");
       var persistenceUnitName = config().getString("pu.name");
@@ -91,16 +90,23 @@ public class MainVerticle extends AbstractVerticle {
     // end::routing[]
 
     JksOptions keyOptions = new JksOptions();
-    keyOptions.setPath("/home/toor/certs/selfsigned2.jks");
+    // keyOptions.setPath("/home/toor/certs/selfsigned2.jks");
+    // keyOptions.setPath("/home/toor/tmp/certs/.cert/server.jks");
+
+    // atarczts-websvr
     // keyOptions.setPath("atarc-websvr.jks");
-    keyOptions.setPassword("changeit");
+    // keyOptions.setPassword("changeit");
+
+    // dev
+    keyOptions.setPath("keystore.p12");
+    keyOptions.setPassword("changeme");
 
     HttpServerOptions options = new HttpServerOptions()
       .setIdleTimeout(0)
-      .setUseAlpn(true);
+      .setUseAlpn(true)
 
-      // .setSsl(true)
-      // .setKeyStoreOptions(keyOptions);
+      .setSsl(true)
+      .setKeyStoreOptions(keyOptions);
 
       // .setPemTrustOptions(new PemTrustOptions()
       // .addCertPath("/etc/letsencrypt/live/atarcapi.eastus.cloudapp.azure.com/chain.pem"))
@@ -108,8 +114,8 @@ public class MainVerticle extends AbstractVerticle {
       //   .addKeyPath("/etc/letsencrypt/live/atarcapi.eastus.cloudapp.azure.com/privkey.pem")
       //   .addCertPath("/etc/letsencrypt/live/atarcapi.eastus.cloudapp.azure.com/fullchain.pem"));
 
-    // int port = 8443;
-    int port = 8080;
+    // int port = 8080;
+    int port = config().getInteger("app.port", 8080);
 
     // tag::async-start[]
     Uni<HttpServer> startHttpServer = vertx.createHttpServer(options)
