@@ -11,11 +11,10 @@
 
     <properties>
 
-      <!-- PostgreSQL -->
+      <!-- docker image on localhost -->
       <property name="javax.persistence.jdbc.url"
                 value="jdbc:postgresql://172.16.136.129:5432/mytest_azure"/>
-
-      <!-- Credentials -->
+      <!-- creds -->
       <property name="javax.persistence.jdbc.user"
                 value="toor"/>
       <property name="javax.persistence.jdbc.password"
