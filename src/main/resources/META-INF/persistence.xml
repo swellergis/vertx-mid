@@ -12,15 +12,14 @@
     <properties>
 
       <!-- PostgreSQL -->
-      <!-- pg -->
       <property name="javax.persistence.jdbc.url"
-                value="jdbc:postgresql://192.168.57.35:5432/mytest_azure"/>  <!--3-->
+                value="jdbc:postgresql://172.16.136.129:5432/mytest_azure"/>
 
       <!-- Credentials -->
       <property name="javax.persistence.jdbc.user"
-                value="foo"/>
+                value="toor"/>
       <property name="javax.persistence.jdbc.password"
-                value="bar"/>
+                value="oicu812"/>
 
       <!-- The Vert.x SQL Client connection pool size -->
       <property name="hibernate.connection.pool_size"

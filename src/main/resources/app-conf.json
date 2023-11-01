@@ -1,6 +1,6 @@
 {
-    "pg.name" : "mytest_azure",
-    "pg.uri" : "192.168.57.35:5432",
-    "pu.name" : "atarcDS"
-  }
-  
+  "app.port" : 8080,
+  "pg.name" : "mytest_azure",
+  "pg.uri" : "172.16.136.129:5432",
+  "pu.name" : "atarcDS"
+}
