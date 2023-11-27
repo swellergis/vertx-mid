@@ -97,16 +97,16 @@ public class MainVerticle extends AbstractVerticle {
     // keyOptions.setPath("atarc-websvr.jks");
     // keyOptions.setPassword("changeit");
 
-    // dev
-    keyOptions.setPath("keystore.p12");
-    keyOptions.setPassword("changeme");
+    // dev and atarc-apisrv
+    // keyOptions.setPath("keystore.p12");
+    // keyOptions.setPassword("changeme");
 
     HttpServerOptions options = new HttpServerOptions()
       .setIdleTimeout(0)
-      .setUseAlpn(true)
+      .setUseAlpn(true);
 
-      .setSsl(true)
-      .setKeyStoreOptions(keyOptions);
+      // .setSsl(true)
+      // .setKeyStoreOptions(keyOptions);
 
       // .setPemTrustOptions(new PemTrustOptions()
       // .addCertPath("/etc/letsencrypt/live/atarcapi.eastus.cloudapp.azure.com/chain.pem"))
