@@ -11,14 +11,14 @@
 
     <properties>
 
-      <!-- docker image on localhost -->
+      <!-- pg vm -->
       <property name="javax.persistence.jdbc.url"
-                value="jdbc:postgresql://172.16.136.129:5432/mytest_azure"/>
+                value="jdbc:postgresql://192.168.57.35:5432/mytest_azure"/>
       <!-- creds -->
       <property name="javax.persistence.jdbc.user"
                 value="toor"/>
       <property name="javax.persistence.jdbc.password"
-                value="oicu812"/>
+                value="Oicu812Oicu812"/>
 
       <!-- The Vert.x SQL Client connection pool size -->
       <property name="hibernate.connection.pool_size"

@@ -1,6 +1,7 @@
 ### `vertx-mid:dev container (8080)`
 
 docker build -t vertx-mid:dev .
+docker run -itd --rm -p 8080:8080 vertx-mid:dev
 
 ### `vertx-mid:dev and bitnami/postgresql:15 containers (8080 and 5432)`
 
@@ -13,7 +14,7 @@ curl http://localhost:8080/customers
 
 docker run -itd --restart unless-stopped -e POSTGRES_USER=toor -e POSTGRES_PASSWORD=oicu812 -v /data:/var/lib/postgresql/data --name postgresql bitnami/postgresql
 
-psql -h 10.2.102.69 -p 5432 -d mytest -U toor
+psql -h 172.16.136.129 -p 5432 -d mytest -U toor
 psql -h localhost -p 5432 -d mytest -U toor
 oicu812
 
