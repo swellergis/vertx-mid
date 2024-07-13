@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import com.lumen.vertx.model.Request;
 import com.lumen.vertx.model.SsnLookup;
+import com.lumen.vertx.model.Users;
 
 import javax.persistence.Persistence;
 import java.util.List;
@@ -78,6 +79,8 @@ public class MainVerticle extends AbstractVerticle {
 
     BodyHandler bodyHandler = BodyHandler.create();
     router.post().handler(bodyHandler::handle);
+
+    router.get("/api/apikeys/:loginid").respond(this::getUserApiKey);
 
     router.get("/customers").respond(this::listCustomers);
     router.get("/customers/:id").respond(this::getCustomer);
@@ -139,6 +142,17 @@ public class MainVerticle extends AbstractVerticle {
     return emf.withSession(session -> session
       .find(SsnLookup.class, id))
       .onItem().ifNull().continueWith(SsnLookup::new);
+  }
+
+  private Uni<String> getUserApiKey(RoutingContext ctx) {
+    String loginid = ctx.pathParam("loginid");
+    String queryString = String.format("from Users where loginid = '%s'", loginid);
+    Uni<List<Users>> uniUsers = emf.withSession(session -> session
+      .createQuery(queryString, Users.class)
+      .getResultList());
+    return uniUsers.onItem()
+      .transform(response -> response.iterator().next().getApiKey())
+      .onFailure().recoverWithItem("NotFoundException");
   }
 
   private Uni<SsnLookup> createCustomer(RoutingContext ctx) {
