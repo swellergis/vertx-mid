@@ -5,9 +5,13 @@
              version="2.0">
 
   <persistence-unit name="atarcDS">
-    <provider>org.hibernate.reactive.provider.ReactivePersistenceProvider</provider>  <!--1-->
+    <provider>org.hibernate.reactive.provider.ReactivePersistenceProvider</provider>
 
-    <class>com.lumen.vertx.model.Customer</class> <!--2-->
+    <class>com.lumen.vertx.model.Comment</class>
+    <class>com.lumen.vertx.model.Customer</class>
+    <class>com.lumen.vertx.model.Request</class>
+    <class>com.lumen.vertx.model.SsnLookup</class>
+    <class>com.lumen.vertx.model.Users</class>
 
     <properties>
 
