@@ -6,7 +6,7 @@ services:
     container_name: vertx
     #build: .
     #image: skionus/vertx-mid:dev
-    image: vertx-mid:dev
+    image: vertx-mid:pg
     #restart: unless-stopped
     ports:
       - 8080:8080

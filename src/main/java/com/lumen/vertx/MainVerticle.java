@@ -151,9 +151,11 @@ public class MainVerticle extends AbstractVerticle {
   private Uni<String> getUserApiKey(RoutingContext ctx) {
     String loginid = ctx.pathParam("loginid");
     String queryString = String.format("from Users where loginid = '%s'", loginid);
+
     Uni<List<Users>> uniUsers = emf.withSession(session -> session
       .createQuery(queryString, Users.class)
       .getResultList());
+
     return uniUsers.onItem()
       .transform(response -> response.iterator().next().getApiKey())
       .onFailure().recoverWithItem("NotFoundException");
