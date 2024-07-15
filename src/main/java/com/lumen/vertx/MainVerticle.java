@@ -15,6 +15,11 @@ import io.vertx.mutiny.ext.web.Router;
 import io.vertx.mutiny.ext.web.RoutingContext;
 import io.vertx.mutiny.ext.web.handler.BodyHandler;
 import io.vertx.mutiny.ext.web.handler.CorsHandler;
+import javax.persistence.Persistence;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.hibernate.reactive.mutiny.Mutiny;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +28,6 @@ import com.lumen.vertx.model.Request;
 import com.lumen.vertx.model.SsnLookup;
 import com.lumen.vertx.model.Users;
 
-import javax.persistence.Persistence;
 import java.util.List;
 import java.util.Map;
 
