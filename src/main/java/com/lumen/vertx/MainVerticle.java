@@ -150,7 +150,8 @@ public class MainVerticle extends AbstractVerticle {
 
   private Uni<String> getUserApiKey(RoutingContext ctx) {
     String loginid = ctx.pathParam("loginid");
-    String queryString = String.format("from Users where loginid = '%s'", loginid);
+    String queryString = String.format("from Users s where s.loginid = '%s'", loginid);
+    logger.info(String.format("queryString: %s", queryString));
 
     Uni<List<Users>> uniUsers = emf.withSession(session -> session
       .createQuery(queryString, Users.class)
