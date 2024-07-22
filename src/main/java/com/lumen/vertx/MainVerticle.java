@@ -15,10 +15,10 @@ import io.vertx.mutiny.ext.web.Router;
 import io.vertx.mutiny.ext.web.RoutingContext;
 import io.vertx.mutiny.ext.web.handler.BodyHandler;
 import io.vertx.mutiny.ext.web.handler.CorsHandler;
-import javax.persistence.Persistence;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.Persistence;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 
 import org.hibernate.reactive.mutiny.Mutiny;
 import org.slf4j.Logger;
@@ -51,9 +51,9 @@ public class MainVerticle extends AbstractVerticle {
       // var pgUri = "192.168.57.35:5432";
       // var persistenceUnitName = "atarcDS";
 
-      // var props = Map.of("javax.persistence.jdbc.url", "jdbc:postgresql://192.168.57.35:" + 5432 + pgName);  // <1>
-      // var props = Map.of("javax.persistence.jdbc.url", "jdbc:postgresql://localhost:" + pgPort + "/postgres");
-      var props = Map.of("javax.persistence.jdbc.url", "jdbc:postgresql://" + pgUri + "/" + pgName);
+      // var props = Map.of("jakarta.persistence.jdbc.url", "jdbc:postgresql://192.168.57.35:" + 5432 + pgName);
+      // var props = Map.of("jakarta.persistence.jdbc.url", "jdbc:postgresql://localhost:" + pgPort + "/postgres");
+      var props = Map.of("jakarta.persistence.jdbc.url", "jdbc:postgresql://" + pgUri + "/" + pgName);
       emf = Persistence
         .createEntityManagerFactory(persistenceUnitName, props)
         .unwrap(Mutiny.SessionFactory.class);

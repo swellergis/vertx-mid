@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+<persistence version="3.0" xmlns="https://jakarta.ee/xml/ns/persistence"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
-             version="2.0">
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
 
   <persistence-unit name="atarcDS">
     <provider>org.hibernate.reactive.provider.ReactivePersistenceProvider</provider>
@@ -14,22 +13,27 @@
     <class>com.lumen.vertx.model.Users</class>
 
     <properties>
+      <!-- db driver -->
+      <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
 
       <!-- pg vm -->
-      <property name="javax.persistence.jdbc.url"
+      <property name="jakarta.persistence.jdbc.url"
                 value="jdbc:postgresql://192.168.57.35:5432/mytest_azure"/>
       <!-- creds -->
-      <property name="javax.persistence.jdbc.user"
+      <property name="jakarta.persistence.jdbc.user"
                 value="toor"/>
-      <property name="javax.persistence.jdbc.password"
+      <property name="jakarta.persistence.jdbc.password"
                 value="Oicu812Oicu812"/>
+
+      <!-- db dialect -->
+      <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
 
       <!-- The Vert.x SQL Client connection pool size -->
       <property name="hibernate.connection.pool_size"
                 value="10"/>
 
       <!-- Automatic schema export -->
-      <property name="javax.persistence.schema-generation.database.action"
+      <property name="jakarta.persistence.schema-generation.database.action"
                 value="create"/>
 
       <!-- SQL statement logging -->

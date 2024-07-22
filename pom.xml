@@ -19,7 +19,7 @@
 
     <vertx.version>4.5.8</vertx.version>
     <mutiny-vertx.version>3.13.2</mutiny-vertx.version>
-    <hibernate-reactive.version>1.1.9.Final</hibernate-reactive.version>
+    <hibernate-reactive.version>2.3.1.Final</hibernate-reactive.version>
     <hibernate.version>6.5.2.Final</hibernate.version>
     <junit-jupiter.version>5.10.3</junit-jupiter.version>
 
@@ -86,6 +86,24 @@
       <groupId>org.hibernate.reactive</groupId>
       <artifactId>hibernate-reactive-core</artifactId>
       <version>${hibernate-reactive.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-jpamodelgen</artifactId>
+        <version>${hibernate.version}</version>
+        <scope>provided</scope>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/jakarta.xml.bind/jakarta.xml.bind-api -->
+    <dependency>
+        <groupId>jakarta.xml.bind</groupId>
+        <artifactId>jakarta.xml.bind-api</artifactId>
+        <version>4.0.2</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.antlr/antlr4-runtime -->
+    <dependency>
+        <groupId>org.antlr</groupId>
+        <artifactId>antlr4-runtime</artifactId>
+        <version>4.13.1</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
