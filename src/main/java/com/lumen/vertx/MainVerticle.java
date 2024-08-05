@@ -21,8 +21,6 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 
 import org.hibernate.reactive.mutiny.Mutiny;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.lumen.vertx.model.Request;
 import com.lumen.vertx.model.SsnLookup;
@@ -33,10 +31,12 @@ import inet.ipaddr.IPAddressString;
 
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MainVerticle extends AbstractVerticle {
 
-  private static final Logger logger = LoggerFactory.getLogger(MainVerticle.class);
+  private final static Logger LOG = Logger.getLogger(MainVerticle.class.getName());
   private Mutiny.SessionFactory emf;
 
   private String bindAddress;
@@ -47,13 +47,15 @@ public class MainVerticle extends AbstractVerticle {
   private String puName;
 
   @Override
-  public Uni<Void> asyncStart() {
-    try {
+  public Uni<Void> asyncStart() 
+  {
+    try 
+    {
       readConfigProps();
-    } catch (Exception e) {
-      // TODO
-      // logger.log(Level.WARNING, "Exception thrown in config props", e);
-      logger.error("🔥 Exception thrown in config props", e);
+    } 
+    catch (Exception e) 
+    {
+      LOG.log(Level.SEVERE, "🔥 Exception thrown in config props", e);
       return Uni.createFrom().nullItem();
     }
 
@@ -73,7 +75,7 @@ public class MainVerticle extends AbstractVerticle {
     });
 
     startHibernate = vertx.executeBlocking(startHibernate)  // <2>
-      .onItem().invoke(() -> logger.info("✅ Hibernate Reactive is ready"));
+      .onItem().invoke(() -> LOG.info("✅ Hibernate Reactive is ready"));
 
     Router router = Router.router(vertx);
     router.route().handler(CorsHandler.create()
@@ -132,7 +134,7 @@ public class MainVerticle extends AbstractVerticle {
     Uni<HttpServer> startHttpServer = vertx.createHttpServer(options)
       .requestHandler(router)
       .listen(bindPort, bindAddress)
-      .onItem().invoke(() -> logger.info("✅ HTTP server listening on port " + bindPort));
+      .onItem().invoke(() -> LOG.info("✅ HTTP server listening on port " + bindPort));
 
     return Uni.combine().all().unis(startHibernate, startHttpServer).discardItems();  // <1>
   }
@@ -210,9 +212,9 @@ public class MainVerticle extends AbstractVerticle {
 
     vertx.deployVerticle(MainVerticle::new, options).subscribe().with(
       ok -> {
-        logger.info("✅ Deployment success");
+        LOG.info("✅ Deployment success");
       },
-      err -> logger.error("🔥 Deployment failure", err));
+      err -> LOG.log(Level.SEVERE, "🔥 Deployment failure", err));
   }
 
   private void readConfigProps() throws IllegalArgumentException, InterruptedException
