@@ -18,9 +18,6 @@ COPY --from=builder /project/target/*-fat.jar $APP_DIR/$APP_FILE
 
 #COPY --from=builder /project/keystore.p12 $APP_DIR/keystore.p12
 
-COPY --from=builder /project/src/main/resources/app-conf.json $APP_DIR/app-conf.json
-
 ENTRYPOINT ["sh", "-c"]
-#CMD ["exec java -jar $APP_FILE"]
-CMD ["exec java -jar $APP_FILE -conf app-conf.json"]
+CMD ["exec java -jar $APP_FILE"]
 
