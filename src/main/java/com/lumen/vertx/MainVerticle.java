@@ -146,7 +146,7 @@ public class MainVerticle extends AbstractVerticle {
   }
 
   private Uni<SsnLookup> getCustomer(RoutingContext ctx) {
-    long id = Long.parseLong(ctx.pathParam("customer_id"));
+    long id = Long.parseLong(ctx.pathParam("id"));
     return emf.withSession(session -> session
       .find(SsnLookup.class, id))
       .onItem().ifNull().continueWith(SsnLookup::new);
@@ -183,15 +183,19 @@ public class MainVerticle extends AbstractVerticle {
   }
 
   private Uni<List<Request>> listRequests(RoutingContext ctx) {
+    String queryString = "FROM Request";
     return emf.withSession(session -> session
-      .createQuery("from Request", Request.class)
+      .createQuery(queryString, Request.class)
       .getResultList());
   }
 
   private Uni<List<Request>> listUserRequests(RoutingContext ctx) {
     String empId = ctx.pathParam("emp_id");
+    String queryString = "SELECT u FROM Request u WHERE u.empId = :empId";
+
     return emf.withSession(session -> session
-      .createQuery("FROM Request WHERE emp_id='" + empId + "'", Request.class)
+      .createQuery(queryString, Request.class)
+      .setParameter("empId", empId)
       .getResultList());
   }
 
