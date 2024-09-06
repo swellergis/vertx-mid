@@ -28,7 +28,12 @@ public class SsnLookup implements Serializable {
 
     private String ssn;
 
-    public SsnLookup() {
+    public SsnLookup()
+    {
+        this.customerId = 0L;
+        this.firstName = "false";
+        this.lastName = "false";
+        this.ssn = "false";
     }
 
     public SsnLookup(Long customerId, String firstName, String lastName, String ssn) {

@@ -25,7 +25,14 @@ public class Request implements Serializable
     private String dob;
     private String justification;
 
-    public Request() {
+    public Request()
+    {
+        this.empId = "false";
+        this.firstName = "false";
+        this.lastName = "false";
+        this.ssn = "false";
+        this.dob = "false";
+        this.justification = "false";
     }
 
     public Request(String empId, String firstName, String lastName, String ssn, String dob, String justification) {

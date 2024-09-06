@@ -27,7 +27,13 @@ public class Customer implements Serializable {
     private String dob;
     private String city;
 
-    public Customer() {
+    public Customer()
+    {
+        this.empId = 0L;
+        this.firstName = "false";
+        this.lastName = "false";
+        this.dob = "false";
+        this.city = "false";
     }
 
     public Customer(Long empId, String firstName, String lastName, String dob, String city) {

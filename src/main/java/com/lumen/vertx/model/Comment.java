@@ -22,7 +22,11 @@ public class Comment implements Serializable
     private String title;
     private String text;
 
-    public Comment() {
+    public Comment()
+    {
+        this.empId = "false";
+        this.title = "false";
+        this.text = "false";
     }
 
     public Comment(String empId, String title, String text) {

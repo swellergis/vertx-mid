@@ -142,7 +142,8 @@ public class MainVerticle extends AbstractVerticle {
   private Uni<List<SsnLookup>> listCustomers(RoutingContext ctx) {
     return emf.withSession(session -> session
       .createQuery("from SsnLookup", SsnLookup.class)
-      .getResultList());
+      .getResultList()
+      .onFailure().recoverWithItem(List.of()));
   }
 
   private Uni<SsnLookup> getCustomer(RoutingContext ctx) {
@@ -152,7 +153,7 @@ public class MainVerticle extends AbstractVerticle {
       .onItem().ifNull().continueWith(SsnLookup::new);
   }
 
-  private Uni<String> getUserApiKey(RoutingContext ctx) {
+  private Uni<Users> getUserApiKey(RoutingContext ctx) {
     String loginId = ctx.pathParam("loginid");
     String queryString = "SELECT DISTINCT u FROM Users u WHERE u.loginId = :loginId";
 
@@ -162,8 +163,8 @@ public class MainVerticle extends AbstractVerticle {
       .getResultList());
 
     return uniUsers.onItem()
-      .transform(response -> response.iterator().next().getApiKey())
-      .onFailure().recoverWithItem("null");
+      .transform(response -> response.iterator().next())
+      .onFailure().recoverWithItem(Users::new);
   }
 
   private Uni<SsnLookup> createCustomer(RoutingContext ctx) {
@@ -171,7 +172,8 @@ public class MainVerticle extends AbstractVerticle {
     return emf.withSession(session -> session.
       persist(customer)
       .call(session::flush)
-      .replaceWith(customer));
+      .replaceWith(customer)
+      .onFailure().recoverWithItem(SsnLookup::new));
   }
 
   private Uni<Request> createRequest(RoutingContext ctx) {
@@ -179,14 +181,16 @@ public class MainVerticle extends AbstractVerticle {
     return emf.withSession(session -> session.
       persist(request)
       .call(session::flush)
-      .replaceWith(request));
+      .replaceWith(request)
+      .onFailure().recoverWithItem(Request::new));
   }
 
   private Uni<List<Request>> listRequests(RoutingContext ctx) {
     String queryString = "FROM Request";
     return emf.withSession(session -> session
       .createQuery(queryString, Request.class)
-      .getResultList());
+      .getResultList()
+      .onFailure().recoverWithItem(List.of()));
   }
 
   private Uni<List<Request>> listUserRequests(RoutingContext ctx) {
@@ -196,7 +200,8 @@ public class MainVerticle extends AbstractVerticle {
     return emf.withSession(session -> session
       .createQuery(queryString, Request.class)
       .setParameter("empId", empId)
-      .getResultList());
+      .getResultList()
+      .onFailure().recoverWithItem(List.of()));
   }
 
   private Uni<Request> getRequest(RoutingContext ctx) {

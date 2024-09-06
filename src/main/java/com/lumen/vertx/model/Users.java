@@ -25,7 +25,11 @@ public class Users implements Serializable
     @Column(name = "apikey")
     private String apiKey;
 
-    public Users() {}
+    public Users()
+    {
+        this.loginId = "false";
+        this.apiKey = "false";
+    }
 
     public Users(String loginId, String apiKey) 
     {
